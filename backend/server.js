@@ -8,6 +8,14 @@ import logger from './utils/logger.js';
 dotenv.config();
 const app = express();
 
+//connect to mongoDb database
+mongoose
+  .connect(process.env.DATABASE_URL)
+  .then(() => logger.info("MongoDB is connected Successfully !"))
+  .catch((err) => {
+    logger.error(err.message);
+  });
+
 //middleware 
 app.use(cookieParser());
 app.use(express.json());
