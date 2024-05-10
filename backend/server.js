@@ -5,6 +5,8 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import logger from './utils/logger.js';
 
+import authRouter from "./routes/auth.route.js"
+
 dotenv.config();
 const app = express();
 
@@ -29,6 +31,15 @@ app.use(express.urlencoded({ extended: false }));
 //     origin: [ORIGIN], //!write frontend route here
 //   })
 // );
+
+//routes
+app.get("/api/",(req,res)=>{
+  res.json({message:"API is working"})
+})
+
+app.use("/api",authRouter)
+
+
 
 const PORT = process.env.PORT 
 app.listen(PORT, () => logger.info(`Express Server running on port ${PORT}`));
