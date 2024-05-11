@@ -24,20 +24,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false })); 
 
 // Cross Origin Resource Sharing
-// const ORIGIN=process.env.ORIGIN
-// app.use(
-//   cors({
-//     credentials: true,
-//     origin: [ORIGIN], //!write frontend route here
-//   })
-// );
+const ORIGIN=process.env.FRONTEND_URL
+app.use(
+  cors({
+    credentials: true,
+    origin: [ORIGIN], //!write frontend route here
+  })
+);
 
 //routes
 app.get("/api/",(req,res)=>{
   res.json({message:"API is working"})
 })
 
-app.use("/api",authRouter)
+app.use("/api/auth",authRouter)
 
 
 
