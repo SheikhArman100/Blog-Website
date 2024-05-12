@@ -42,3 +42,10 @@ export const signupSchema = z
     message: "Passwords do not match",
     path: ["passwordConfirmation"],
   });
+
+  export const createBlogSchema=z.object({
+    title: z.string().nonempty("Add a title"),
+    image: z.string().nonempty("Upload an image"),
+    category: z.string().nonempty("Select an category"),
+    description: z.string().nonempty("Write something"),
+  });

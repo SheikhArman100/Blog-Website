@@ -1,7 +1,7 @@
 import express from "express"
 import { zodValidation } from "../middlewares/zodValidation.js"
 import { signInSchema, signupSchema } from "../utils/zodSchema/auth.schema.js"
-import { handleSignIn, handleSignOut, handleSignup, handleUpdateAccessToken } from "../controllers/auth.controller.js"
+import { handleSignIn, handleSignOut, handleSignup, handleUpdateAccessToken, handleUserInfo } from "../controllers/auth.controller.js"
 // import passport from "../middlewares/passport.js"
 import logger from "../utils/logger.js"
 
@@ -23,6 +23,9 @@ router.post("/signout",handleSignOut)
 
 //update accessToken
 router.get("/update-access-token",handleUpdateAccessToken)
+
+//user info
+router.get("/user-info",handleUserInfo)
 
 //signin with google
 // router.get("/signin/google",passport.authenticate("google"))

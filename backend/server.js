@@ -6,6 +6,8 @@ import mongoose from 'mongoose';
 import logger from './utils/logger.js';
 
 import authRouter from "./routes/auth.route.js"
+import categoryRouter from "./routes/category.route.js"
+import blogRouter from "./routes/blog.route.js"
 
 dotenv.config();
 const app = express();
@@ -20,7 +22,7 @@ mongoose
 
 //middleware 
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: false })); 
 
 // Cross Origin Resource Sharing
@@ -38,6 +40,8 @@ app.get("/api/",(req,res)=>{
 })
 
 app.use("/api/auth",authRouter)
+app.use("/api/category",categoryRouter)
+app.use("/api/blog",blogRouter)
 
 
 

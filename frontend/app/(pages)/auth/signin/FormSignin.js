@@ -8,7 +8,7 @@ import { axiosPublic } from '@/lib/axios/axiosConfig.js';
 import { signinSchema } from '@/lib/zod_Schema.js';
 import { useAuthStore } from '@/lib/zustand_store/auth_store.js';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation.js';
 import React, { useState } from 'react'
@@ -18,6 +18,7 @@ const FormSignin = () => {
   const router = useRouter();
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
     const [isHidden, setIsHidden] = useState(true);
     //react-hook-form setup
   const {
@@ -39,7 +40,7 @@ const FormSignin = () => {
     },
     onSuccess: async (data) => {
       setAccessToken(data.accessToken);
-      // return queryClient.invalidateQueries({ queryKey: ["check"] });
+      return queryClient.invalidateQueries({ queryKey: ["user"] });
     },
   });
 

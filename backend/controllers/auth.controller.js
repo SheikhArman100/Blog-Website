@@ -222,3 +222,49 @@ export const handleUpdateAccessToken=async(req,res)=>{
     });
   }
 }
+
+export const handleUserInfo=async(req,res)=>{
+  try {
+    const cookies = req.cookies;
+    if (!cookies?.BlogJwt)
+      return res.status(401).json({
+        message: "No refresh token found",
+      });
+    const refreshToken = cookies.BlogJwt;
+
+
+    //?Is refreshToken in db?
+    const findUser = await User.findOne({
+      refreshToken: refreshToken,
+    });
+
+
+    //? if refreshToken found in cookies but not in database.Could be hacker leaked a rt from cookie
+    if (!findUser) {
+      return res.status(403).json({
+        message: "Not Authorized",
+      });
+    }
+
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+      if (err || findUser.id !== decoded.id)
+        return res.status(403).json({
+          message: "Invalid refresh token",
+        });
+      
+      return res.status(200).json({
+        user:{
+          name:findUser.name,
+          email:findUser.email
+        },
+        message: "Authorized",
+      });
+    });
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({
+      message: "Something went wrong ",
+      error: error.message,
+    });
+  }
+}
