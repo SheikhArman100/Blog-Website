@@ -6,7 +6,7 @@ const Blogs = async ({ page }) => {
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/all?page=${page}`
   );
   const data = await response.json();
-  console.log(data?.blogs);
+  
   return (
     <div className="w-full flex-1 max-w-5xl flex flex-col">
       {data?.blogs.length === 0 ? (

@@ -49,3 +49,7 @@ export const signupSchema = z
     category: z.string().nonempty("Select an category"),
     description: z.string().nonempty("Write something"),
   });
+
+  export const createCommentSchema=z.object({
+    comment:z.string().nonempty("Add a Comment"),
+  })

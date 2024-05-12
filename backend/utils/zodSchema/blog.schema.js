@@ -16,3 +16,11 @@ export const createBlogSchema = z.object({
         })
     }),
   });
+
+export const createCommentSchema=z.object({
+  body:z.object({
+    comment :z.string({
+      required_error: "Comment is required",
+    }),
+  })
+})

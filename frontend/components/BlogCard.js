@@ -4,7 +4,7 @@ import Link from 'next/link.js'
 
 const BlogCard = ({blog}) => {
   return (
-    <Link href={blog._id} className='bg-gray-200 p-2 rounded-lg'>
+    <Link href={`/blog/${blog._id}`} className='bg-gray-200 p-2 rounded-lg'>
         <div className='bg-gray-400 w-full aspect-square rounded-lg relative'>
             <Image src={blog.image} fill alt='blog pc'/>
         </div>
