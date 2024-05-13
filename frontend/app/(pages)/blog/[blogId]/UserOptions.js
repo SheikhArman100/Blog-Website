@@ -32,7 +32,7 @@ import { Delete, Edit, EllipsisVertical, Reply } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-const UserOptions = ({ commentId, content, userEmail,blogId }) => {
+const UserOptions = ({ commentId, content, userEmail, blogId }) => {
   const { data } = useUserInfo();
   const user = data?.user;
 
@@ -49,13 +49,17 @@ const UserOptions = ({ commentId, content, userEmail,blogId }) => {
             <DropdownMenuLabel>Options</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <EditOption content={content} blogId={blogId} commentId={commentId}/>
+              <EditOption
+                content={content}
+                blogId={blogId}
+                commentId={commentId}
+              />
             </DropdownMenuItem>
             {/* <DropdownMenuItem asChild>
               <ReplyOption commentId={commentId}/>
             </DropdownMenuItem> */}
             <DropdownMenuItem asChild>
-              <DeleteOption commentId={commentId} blogId={blogId}/>
+              <DeleteOption commentId={commentId} blogId={blogId} />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -63,21 +67,19 @@ const UserOptions = ({ commentId, content, userEmail,blogId }) => {
     </>
   );
 };
-const DeleteOption = ({ commentId,blogId }) => {
+const DeleteOption = ({ commentId, blogId }) => {
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { toast } = useToast();
   //delete comment mutation
   const handleDeleteCommentMutation = useMutation({
     mutationFn: async (data) => {
-      
       const response = await axiosPrivate.delete(
         `/blog/${blogId}/comment/${commentId}`,
         {
           withCredentials: true,
         }
       );
-      console.log("working")
       return response.data;
     },
     onSuccess: async () => {
@@ -86,7 +88,6 @@ const DeleteOption = ({ commentId,blogId }) => {
   });
   //handle delete
   const handleDelete = () => {
-    
     handleDeleteCommentMutation.mutate(
       {},
       {
@@ -115,7 +116,6 @@ const DeleteOption = ({ commentId,blogId }) => {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -139,35 +139,40 @@ const DeleteOption = ({ commentId,blogId }) => {
     </AlertDialog>
   );
 };
-const EditOption = ({content,blogId,commentId}) => {
-  const axiosPrivate=useAxiosPrivate()
-  const queryClient=useQueryClient()
-   const { toast } = useToast();
+const EditOption = ({ content, blogId, commentId }) => {
+  const axiosPrivate = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(updateCommentSchema),})
+    resolver: zodResolver(updateCommentSchema),
+  });
 
-    //update comment mutation
-    const handleUpdateCommentMutation=useMutation({
-      mutationFn:async(data)=>{
-        const response=await axiosPrivate.put(`/blog/${blogId}/comment/${commentId}`,data,{
-          withCredentials:true
-        })
-        return response.data
-      },
-      onSuccess: async () => {
-        
-        return queryClient.invalidateQueries({ queryKey: ["comments"] });
-      },
-    })
+  //update comment mutation
+  const handleUpdateCommentMutation = useMutation({
+    mutationFn: async (data) => {
+      const response = await axiosPrivate.put(
+        `/blog/${blogId}/comment/${commentId}`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    },
+    onSuccess: async () => {
+      return queryClient.invalidateQueries({ queryKey: ["comments"] });
+    },
+  });
 
-    const handleUpdateComment=(data)=>{
-       handleUpdateCommentMutation.mutate({
-        comment:data.comment
+  const handleUpdateComment = (data) => {
+    handleUpdateCommentMutation.mutate(
+      {
+        comment: data.comment,
       },
       {
         onError: (data) => {
@@ -180,9 +185,9 @@ const EditOption = ({content,blogId,commentId}) => {
             title: data.message,
           });
         },
-      })
-
-    }
+      }
+    );
+  };
   return (
     <AlertDialog className="">
       <AlertDialogTrigger asChild>
@@ -196,70 +201,77 @@ const EditOption = ({content,blogId,commentId}) => {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <form autoComplete="off" onSubmit={handleSubmit(handleUpdateComment)}>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Edit the comment</AlertDialogTitle>
-          <AlertDialogDescription>
-            
-            <Input {...register("comment")} type="text" defaultValue={content}/>
-            
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter className="mt-3">
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction asChild>
-            <Button type="submit">Update</Button>
-          </AlertDialogAction>
-        </AlertDialogFooter>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Edit the comment</AlertDialogTitle>
+            <AlertDialogDescription>
+              <Input
+                {...register("comment")}
+                type="text"
+                defaultValue={content}
+              />
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-3">
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button type="submit">Update</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
         </form>
       </AlertDialogContent>
     </AlertDialog>
   );
 };
-const ReplyOption=({commentId})=>{
-  const axiosPrivate=useAxiosPrivate()
-  const queryClient=useQueryClient()
-   const { toast } = useToast();
+const ReplyOption = ({ commentId }) => {
+  const axiosPrivate = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
-   const {
+  const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(createReplySchema),})
+    resolver: zodResolver(createReplySchema),
+  });
 
-    const handleCreateReplyMutation=useMutation({
-      mutationFn:async(data)=>{
-        const response=await axiosPrivate.post(`/comment/${commentId}/reply`,data,{
-          withCredentials:true
-        })
-        return response.data
-      },
-      onSuccess: async () => {
-        
-        return queryClient.invalidateQueries({ queryKey: ["replies"] });
-      },
-    })
-
-  const handleReply=(data)=>{
-    handleCreateReplyMutation.mutate({
-      reply:data.reply
+  const handleCreateReplyMutation = useMutation({
+    mutationFn: async (data) => {
+      const response = await axiosPrivate.post(
+        `/comment/${commentId}/reply`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
     },
-    {
-      onError: (data) => {
-        toast({
-          title: data.response.data.message,
-        });
-      },
-      onSuccess: (data) => {
-        toast({
-          title: data.message,
-        });
-      },
-    })
+    onSuccess: async () => {
+      return queryClient.invalidateQueries({ queryKey: ["replies"] });
+    },
+  });
 
-  }
-  return(
+  const handleReply = (data) => {
+    handleCreateReplyMutation.mutate(
+      {
+        reply: data.reply,
+      },
+      {
+        onError: (data) => {
+          toast({
+            title: data.response.data.message,
+          });
+        },
+        onSuccess: (data) => {
+          toast({
+            title: data.message,
+          });
+        },
+      }
+    );
+  };
+  return (
     <AlertDialog className="">
       <AlertDialogTrigger asChild>
         <Button
@@ -272,24 +284,22 @@ const ReplyOption=({commentId})=>{
       </AlertDialogTrigger>
       <AlertDialogContent>
         <form autoComplete="off" onSubmit={handleSubmit(handleReply)}>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Add your reply</AlertDialogTitle>
-          <AlertDialogDescription>
-            
-            <Input {...register("reply")} type="text" />
-            
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter className="mt-3">
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction asChild>
-            <Button type="submit">Submit</Button>
-          </AlertDialogAction>
-        </AlertDialogFooter>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Add your reply</AlertDialogTitle>
+            <AlertDialogDescription>
+              <Input {...register("reply")} type="text" />
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-3">
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button type="submit">Submit</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
         </form>
       </AlertDialogContent>
     </AlertDialog>
-  )
-}
+  );
+};
 
 export default UserOptions;

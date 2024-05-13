@@ -37,8 +37,6 @@ const SignIn = () => {
           {/* <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4">
           <Suspense fallback={<div>Loading..</div> }>
             <GoogleButton />
-            <FacebookButton />
-            <GithubButton />
             </Suspense>
           </div> */}
         </CardContent>

@@ -6,7 +6,7 @@ const Blogs = async ({ page }) => {
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/all?page=${page}`
   );
   const data = await response.json();
-  
+
   return (
     <div className="w-full flex-1 max-w-5xl flex flex-col">
       {data?.blogs.length === 0 ? (
@@ -23,6 +23,7 @@ const Blogs = async ({ page }) => {
 
       <div className="w-full py-5 flex items-center justify-center gap-2">
         <Link
+          scroll={false}
           href={{
             pathname: "/blog/all",
             query: {
@@ -36,6 +37,7 @@ const Blogs = async ({ page }) => {
           Prev
         </Link>
         <Link
+          scroll={false}
           href={{
             pathname: "/blog/all",
             query: {
