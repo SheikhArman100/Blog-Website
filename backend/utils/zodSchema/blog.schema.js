@@ -24,3 +24,12 @@ export const createCommentSchema=z.object({
     }),
   })
 })
+
+export const updateCommentSchema=z.object({
+  body:z.object({
+    comment :z.string({
+      required_error: "Comment is required",
+    }),
+  })
+})
+

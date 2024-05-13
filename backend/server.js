@@ -8,6 +8,7 @@ import logger from './utils/logger.js';
 import authRouter from "./routes/auth.route.js"
 import categoryRouter from "./routes/category.route.js"
 import blogRouter from "./routes/blog.route.js"
+import replyRouter from "./routes/reply.route.js"
 
 dotenv.config();
 const app = express();
@@ -42,6 +43,7 @@ app.get("/api/",(req,res)=>{
 app.use("/api/auth",authRouter)
 app.use("/api/category",categoryRouter)
 app.use("/api/blog",blogRouter)
+app.use("/api/comment/",replyRouter)
 
 
 

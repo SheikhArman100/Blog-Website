@@ -53,3 +53,10 @@ export const signupSchema = z
   export const createCommentSchema=z.object({
     comment:z.string().nonempty("Add a Comment"),
   })
+  export const updateCommentSchema=z.object({
+    comment:z.string().nonempty("Add a Comment"),
+  })
+
+  export const createReplySchema=z.object({
+    reply:z.string().nonempty("Add a reply"),
+  })

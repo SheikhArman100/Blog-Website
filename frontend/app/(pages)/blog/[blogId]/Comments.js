@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { EllipsisVertical } from "lucide-react";
 import React from "react";
 import UserOptions from "./UserOptions.js";
+import RepliesSection from "./RepliesSection.js";
+import ReplyOption from "./ReplyOption.js";
 
 const Comments = ({ blogId }) => {
   const { data, isPending, error } = useQuery({
@@ -32,14 +34,28 @@ const Comments = ({ blogId }) => {
   return (
     <div className="w-full max-w-3xl flex flex-col gap-3">
       {data?.comments.map((comment, index) => (
-        <div key={index} className="flex gap-x-2">
-          <div className="bg-gray-200  rounded-md w-full shadow-lg px-4 py-4 border border-indigo-500 ">
-            <span className="text-indigo-500 text-sm">
-              {comment.userId.email}
-            </span>
-            <p className="text-lg font-semiBold">{comment.content}</p>
+        <div key={comment._id}>
+          {/* comment */}
+          <div className="flex gap-x-2">
+            <div className="bg-gray-200  rounded-md w-full shadow-lg px-4 py-4 border border-indigo-500  ">
+              <div className="w-full">
+              <span className="text-indigo-500 text-sm">
+                {comment.userId.email}
+              </span>
+              <p className="text-lg font-semiBold">{comment.content}</p>
+              </div>
+              <ReplyOption commentId={comment._id}/>
+            </div>
+            <UserOptions
+              commentId={comment._id}
+              content={comment.content}
+              userEmail={comment.userId.email}
+              blogId={blogId}
+            />
           </div>
-          <UserOptions/>
+          {/* replies */}
+
+          <RepliesSection  commentId={comment._id} />
         </div>
       ))}
     </div>
