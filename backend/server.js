@@ -1,14 +1,14 @@
-import express from 'express';
-import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
 import mongoose from 'mongoose';
 import logger from './utils/logger.js';
 
-import authRouter from "./routes/auth.route.js"
-import categoryRouter from "./routes/category.route.js"
-import blogRouter from "./routes/blog.route.js"
-import replyRouter from "./routes/reply.route.js"
+import authRouter from "./routes/auth.route.js";
+import blogRouter from "./routes/blog.route.js";
+import categoryRouter from "./routes/category.route.js";
+import replyRouter from "./routes/reply.route.js";
 
 dotenv.config();
 const app = express();
@@ -31,7 +31,7 @@ const ORIGIN=process.env.FRONTEND_URL
 app.use(
   cors({
     credentials: true,
-    origin: [ORIGIN], //!write frontend route here
+    origin: [ORIGIN,'https://accounts.google.com/v3/signin/identifier',"ttps://accounts.google.com/o/oauth2/v2/auth"], //!write frontend route here
   })
 );
 

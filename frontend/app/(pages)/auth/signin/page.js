@@ -9,6 +9,7 @@ import {
   } from "@/components/ui/card.jsx";
 import Link from 'next/link.js';
 import FormSignin from "./FormSignin.js";
+import GoogleSigIn from '@/components/GoogleSigIn.js';
 
 const SignIn = () => {
   return (
@@ -24,7 +25,7 @@ const SignIn = () => {
           
           <FormSignin />
 
-          {/* <div className="relative">
+          <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
@@ -33,12 +34,12 @@ const SignIn = () => {
                 Or continue with
               </span>
             </div>
-          </div> */}
-          {/* <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4">
-          <Suspense fallback={<div>Loading..</div> }>
-            <GoogleButton />
-            </Suspense>
-          </div> */}
+          </div>
+          <div className="grid grid-cols-1 gap-2 sm:gap-4">
+          
+            <GoogleSigIn />
+            
+          </div>
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-center gap-2">
           <div className="text-sm text-muted-foreground">

@@ -83,7 +83,7 @@ export const handleSignIn = async (req, res) => {
     //?creating accessToken and refreshToken
     const accessToken = jwt.sign(
       {
-        id: findUser.id,
+        id: findUser._id,
         email: findUser.email,
       },
       process.env.ACCESS_TOKEN_SECRET,
@@ -91,7 +91,7 @@ export const handleSignIn = async (req, res) => {
     );
     const refreshToken = jwt.sign(
       {
-        id: findUser.id,
+        id: findUser._id,
         email: findUser.email,
       },
       process.env.REFRESH_TOKEN_SECRET,
@@ -124,6 +124,59 @@ export const handleSignIn = async (req, res) => {
     });
   }
 };
+
+//handle signin with google
+export const HandleSignInWithGoogle=async(req,res)=>{
+  try {
+    const user=req.user
+   
+
+     //?creating accessToken and refreshToken
+     const accessToken = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "300s" } //5min
+    );
+    const refreshToken = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "18000s" } //50min
+    );
+
+    //?Update the user in the database with the refresh token.
+    await User.findByIdAndUpdate(user._id, {
+      refreshToken: refreshToken
+    });
+    
+    //? Creates Secure Cookie with refresh token
+    res.cookie("BlogJwt", refreshToken, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+      maxAge: 50 * 60 * 1000,
+    });
+    
+    //? return accessToken in res
+    return res.redirect( `${process.env.FRONTEND_URL}/`)
+    
+    
+   
+    
+
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({
+      message: "Something went wrong ",
+      error: error.message,
+    });
+  }
+}
 
 //signout
 export const handleSignOut = async (req, res) => {
