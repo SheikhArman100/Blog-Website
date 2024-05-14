@@ -58,46 +58,7 @@
 
 
 
-## Features
 
-__Backend__
-
-- MongoDB for data storage ad mongoose for schema
-- Password hashing
-- Using JSONWEBTOKEN to create access token and refresh token
-- storing cookie in httpOnly secured storage
-- frontend httpOnly cookie access
-- update access token using refresh token
-- Dynamically access user info using middleware by decoding access token
-- Role Authorization
-- see all the routes [Postman link](https://warped-zodiac-72434.postman.co/workspace/New-Team-Workspace~492f40e7-418b-4f1a-ab4d-7ad4fd632812/collection/20344907-6dd3714d-aab2-415b-8551-324933421c80?action=share&creator=20344907)
-
-__Frontend__
-- making sure only verified user can access dashboard
-- Nextjs new server and client components
-- Signup and Signin page with validation using react-hook-form and zod
-- Axios interceptors to send access token with every request to access personal tasks and info .This make sure that coreect person gets correct dat.It also automatically update accesstoken expiration using refresh token
-- create task with validation using react-hook-form and zod. Here i used beautiful DatePicker with customize DatePicker
-- pop-up modal using daisyui
-- show update info and error using react-toastify
-- add to completed task
-- add to important task
-- delete task with confirmation modal
-- filtering tasks
-- search task using backend query parameter
-- used react-query to fetch and mutation suing its caching ability
-- signout feature
-- zustand for state management
-- react-hook-form advanced feature Controller to get datepicker value
-
-
-
-
-## Screenshots
-
-![Sign in](https://drive.google.com/uc?export=view&id=1hvoI53Tv8fjtcafoiSUxuNocBwFIdUSG)
-
-![dashboard](https://drive.google.com/uc?export=view&id=1MCXDh3aBhv_Rb_t1-kmlhfY-AW4sJOt-)
 
 
 
