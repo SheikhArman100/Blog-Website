@@ -19,7 +19,7 @@
 &nbsp; &nbsp; &nbsp; __create .env.local file.Add this__
 
 `NEXT_PUBLIC_BACKEND_URL`=http://localhost:3500/api &nbsp; &nbsp; &nbsp;**Note: backend url**
-`NEXT_PUBLIC_TINYMCE_KEY`=s4fihdpojtuvg8du8cctatpl9lb228eff8th414uzm7zzcuv &nbsp; &nbsp; &nbsp;**Note: Tinymce**
+`NEXT_PUBLIC_TINYMCE_KEY`= &nbsp; &nbsp; &nbsp;**Note: Tinymce**
 
 
 
@@ -41,7 +41,7 @@
 `REFRESH_TOKEN_SECRET`=
 
 `GOOGLE_CLIENT_ID`=
-GOOGLE_CLIENT_SECRET=
+`GOOGLE_CLIENT_SECRET`=
 
 `FRONTEND_URL`=http://localhost:3000
 `BACKEND_URL`=http://localhost:3500
