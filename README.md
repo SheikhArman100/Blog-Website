@@ -19,6 +19,7 @@
 &nbsp; &nbsp; &nbsp; __create .env.local file.Add this__
 
 `NEXT_PUBLIC_BACKEND_URL`=http://localhost:3500/api &nbsp; &nbsp; &nbsp;**Note: backend url**
+
 `NEXT_PUBLIC_TINYMCE_KEY`= &nbsp; &nbsp; &nbsp;**Note: Tinymce**
 
 
