@@ -1,3 +1,4 @@
+import Blog from "../models/blog.model.js";
 import Category from "../models/category.model.js";
 import logger from "../utils/logger.js";
 
@@ -39,4 +40,33 @@ export const handleGetAllCategory=async(req,res)=>{
     });
   }
 
+}
+
+export const handleCategoryWiseBlog=async(req,res)=>{
+  try {
+    const blogs=await Blog.find().select("title").populate({path:"categoryId",select:"title"})
+    const categoryCounts = {};
+    
+
+    // Count blogs per category
+    blogs.forEach(blog => {
+        const categoryTitle = blog.categoryId.title;
+        if (categoryCounts[categoryTitle]) {
+            categoryCounts[categoryTitle]++;
+        } else {
+            categoryCounts[categoryTitle] = 1;
+        }
+    });
+    const categoryCountsArray = Object.keys(categoryCounts).map((categoryTitle) => ({
+      category:categoryTitle,
+      count: categoryCounts[categoryTitle],
+    }));
+    res.status(200).json({categoryCountsArray})
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
 }

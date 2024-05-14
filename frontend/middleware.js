@@ -28,6 +28,6 @@ export async function middleware(request) {
 
 }
 export const config = {
-    matcher: ["/blog/create","/dashboard/*"]
+    matcher: ["/blog/create","/dashboard"]
       
   }

@@ -1,8 +1,9 @@
 import express from "express";
+import { handleBlogWiseLike, handleCreateBlog, handleCreateComment, handleDeleteComment, handleExportBlog, handleGetAllBLog, handleGetBlog, handleGetComments, handleLikeBLog, handleLikeStatusBlog, handleTrendingBlogs, handleUpdateComment } from "../controllers/blog.controller.js";
 import verifyJWT from "../middlewares/verifyJwt.js";
-import { handleCreateBlog, handleCreateComment, handleDeleteComment, handleGetAllBLog, handleGetBlog, handleGetComments, handleLikeBLog, handleLikeStatusBlog, handleTrendingBlogs, handleUpdateComment } from "../controllers/blog.controller.js";
 import { zodValidation } from "../middlewares/zodValidation.js";
 import { createBlogSchema, createCommentSchema, updateCommentSchema } from "../utils/zodSchema/blog.schema.js";
+
 const router=express.Router()
 
 //create blog
@@ -11,6 +12,11 @@ router.post("/create",verifyJWT,zodValidation(createBlogSchema), handleCreateBlo
 router.get("/trending",handleTrendingBlogs)
 //all blogs
 router.get("/all",handleGetAllBLog)
+//export blog
+router.get("/export",verifyJWT,handleExportBlog)
+
+//blog wise like
+router.get("/like",verifyJWT,handleBlogWiseLike)
 
 //get single blog
 router.get("/:blogId",handleGetBlog)
@@ -30,6 +36,8 @@ router.delete("/:blogId/comment/:commentId",verifyJWT,handleDeleteComment)
 
 //update comment
 router.put("/:blogId/comment/:commentId",verifyJWT,zodValidation(updateCommentSchema),handleUpdateComment)
+
+
 
 
 export default router

@@ -43,7 +43,8 @@ app.get("/api/",(req,res)=>{
 app.use("/api/auth",authRouter)
 app.use("/api/category",categoryRouter)
 app.use("/api/blog",blogRouter)
-app.use("/api/comment/",replyRouter)
+app.use("/api/comment",replyRouter)
+
 
 
 

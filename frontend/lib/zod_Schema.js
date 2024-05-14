@@ -43,9 +43,16 @@ export const signupSchema = z
     path: ["passwordConfirmation"],
   });
 
+  const maxFileSize=500 * 1024
+
   export const createBlogSchema=z.object({
     title: z.string().nonempty("Add a title"),
-    image: z.string().nonempty("Upload an image"),
+    image: z
+    .string().nonempty("Upload an image")
+    .refine((files) => {
+      const decodedImage=Buffer.from(files, 'base64');
+       return decodedImage.length <= maxFileSize;
+    }, `Upload an image(Max 500kb)`),
     category: z.string().nonempty("Select an category"),
     description: z.string().nonempty("Write something"),
   });

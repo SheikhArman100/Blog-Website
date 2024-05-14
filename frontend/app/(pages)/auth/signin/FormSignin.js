@@ -40,6 +40,7 @@ const FormSignin = () => {
     },
     onSuccess: async (data) => {
       setAccessToken(data.accessToken);
+      router.refresh();
       return queryClient.invalidateQueries({ queryKey: ["user"] });
     },
   });

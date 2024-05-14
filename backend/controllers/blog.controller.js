@@ -1,7 +1,7 @@
+import { parse } from "json2csv";
 import Blog from "../models/blog.model.js";
 import Comment from "../models/comment.model.js";
 import Like from "../models/like.model.js";
-import User from "../models/user.model.js";
 import logger from "../utils/logger.js";
 
 export const handleCreateBlog = async (req, res) => {
@@ -66,6 +66,7 @@ export const handleGetAllBLog = async (req, res) => {
     const limit = 6;
     const skip = (page - 1) * limit;
     const blogs = await Blog.find()
+      .sort({ createdAt: -1 })
       .limit(limit)
       .skip(skip)
       .populate({
@@ -290,3 +291,72 @@ export const handleUpdateComment = async (req, res) => {
     });
   }
 };
+
+//export blog to CSV
+export const handleExportBlog = async (req, res) => {
+  try {
+    const userId = req.id;
+    const blogs = await Blog.find({ userId }).populate("categoryId");
+    if (!blogs) {
+      return res.status(404).json({
+        message: "Blogs not found",
+      });
+    }
+
+    const formatBlogs = blogs.map((blog) => ({
+      id: blog._id,
+      categoryName: blog.categoryId.title,
+      postTitle: blog.title,
+      createdAt: blog.createdAt,
+    }));
+
+    const fields = ["id", "categoryName", "postTitle", "createdAt"];
+    const csv = parse(formatBlogs, { fields });
+
+    res.header("Content-Type", "text/csv");
+    res.attachment("blogs.csv");
+
+    return res.status(200).json({
+      file: csv,
+    });
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({
+      error: error.message,
+      message: "Something went wrong",
+    });
+  }
+};
+
+
+//blog wise Like
+export const handleBlogWiseLike=async(req,res)=>{
+  try {
+    const userId=req.id
+    const blogs=await Blog.find({userId})
+    if(!blogs){
+    
+        return res.status(404).json({
+          message: "Blogs not found",
+        });
+      }
+      const likeCounts=[]
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      await Promise.all(blogs.map(async (blog) => {
+        const likes = await Like.find({ blogId: blog._id ,createdAt: { $gte: today, $lte: new Date() } });
+        likeCounts.push({ title: blog.title, likeCount: likes.length });
+      }))
+  
+      res.status(200).json({likes:likeCounts})
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({
+      error: error.message,
+      message: "Something went wrong",
+    });
+  }
+
+}

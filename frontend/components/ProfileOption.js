@@ -20,6 +20,7 @@ import Link from "next/link.js";
 const ProfileOption = () => {
   const { data } = useUserInfo();
   const user = data?.user;
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -33,8 +34,14 @@ const ProfileOption = () => {
           <span className="text-gray-500 text-sm ">{user.email}</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard">Dashboard</Link>
+        <DropdownMenuItem >
+          <Button
+            variant="ghost"
+            onClick={() => router.push("/dashboard")}
+            className="w-full flex items-center justify-start font-semibold px-2"
+          >
+            Dashboard
+          </Button>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <SignOutButton />

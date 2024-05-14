@@ -1,11 +1,31 @@
+"use client"
 import Link from "next/link.js";
 import BlogCard from "./BlogCard.js";
+import { useQuery } from "@tanstack/react-query";
+import { axiosPublic } from "@/lib/axios/axiosConfig.js";
+import Spinner from "./Spinner.js";
 
-const Blogs = async ({ page }) => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/all?page=${page}`
-  );
-  const data = await response.json();
+const Blogs = ({ page }) => {
+  const { data, isPending, error } = useQuery({
+    queryKey: ["blogs",page],
+    queryFn: async () => {
+      const response = await axiosPublic.get(`/blog/all?page=${page}`);
+      return response.data;
+    },
+  });
+  if(isPending){
+    return(
+      <div className='w-full flex-1 flex items-center justify-center'><Spinner className="size-10"/></div>
+    )
+  }
+  if(error){
+    return(
+      <div className='w-full flex-1 flex items-center justify-center'><p className="text-lg">Something went wrong</p></div>
+    )
+  }
+ 
+ 
+
 
   return (
     <div className="w-full flex-1 max-w-5xl flex flex-col">
@@ -45,7 +65,7 @@ const Blogs = async ({ page }) => {
             },
           }}
           className={`py-4 px-8 bg-black text-white text-sm rounded border hover:border-black hover:bg-white hover:text-black font-semibold ${
-            data?.blogs.length === 0 ? "pointer-events-none opacity-50" : ""
+            data?.blogs.length === 0 || data?.blogs.length<6? "pointer-events-none opacity-50" : ""
           }`}
         >
           Next
